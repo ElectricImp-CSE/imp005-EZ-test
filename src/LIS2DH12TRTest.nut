@@ -16,7 +16,8 @@ class LIS2DH12TRTest {
     function test(resolve, reject) {
         _accel.setDataRate(100);
         local val = _accel.getAccel();
-        if ("x" in val && "y" in val && "z" in val) {
+        server.log("val.x = " + val.x + " val.y = " + val.x + " val.z = " + val.x);
+        if (val.x || val.y || val.z) {
             resolve();
         } else {
             reject("LIS2DH12TR Test Failed!");
@@ -36,4 +37,3 @@ class LIS2DH12TRTest {
     }    
 
 }
-

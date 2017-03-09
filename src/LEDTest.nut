@@ -19,19 +19,16 @@ class LEDTest {
 
     function swSPIWrite(data) {
         for (local j = 0; j < 8 ; j++){
-
             spiData.write(data & 0x80);
             spiSclk.write(0);
             imp.sleep(0.000001);
             spiSclk.write(1);   
             data = data << 1; 
-
         }
     }
 
     function setLED(brightness, red, green, blue) {
         local packet = blob(PACKET_LENGTH);
-        
         local globalByte = 0xE0 | (brightness & 0x1F);
         
         packet[0] = 0x00;
@@ -53,7 +50,13 @@ class LEDTest {
     }
 
     function test(resolve, reject) {
-        setLED(0x10, 0xAA, 0xE7, 0x18);
+        setLED(0xFF, 0xFF, 0x00, 0x00);
+        imp.sleep(0.5);
+        setLED(0xFF, 0x00, 0xFF, 0x00);
+        imp.sleep(0.5);
+        setLED(0xFF, 0x00, 0x00, 0xFF);
+        imp.sleep(0.5);
+        setLED(0x00, 0x00, 0x00, 0x00);
         resolve();
     }
 
@@ -69,10 +72,3 @@ class LEDTest {
         }
     }    
 }
-
-
-
-
-
-    
-    

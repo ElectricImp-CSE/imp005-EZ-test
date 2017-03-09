@@ -1,18 +1,20 @@
 class HTS221Test {
 
     _debug = null;
-    tempHumid = null;
+    _tempHumid = null;
 
     function constructor(debug) {
         local temHumI2C = hardware.i2c0;
         temHumI2C.configure(CLOCK_SPEED_400_KHZ);
-        tempHumid = HTS221(temHumI2C);
+
+        _tempHumid = HTS221(temHumI2C);
+        _tempHumid.setMode(HTS221_MODE.ONE_SHOT);
 
         this._debug = debug;
     }
 
     function test(resolve, reject) {
-        tempHumid.read(function(result) {
+        _tempHumid.read(function(result) {
             if ("error" in result) {
                 reject("HTS221 Test Failed: " + result.error);
             } else {
@@ -35,4 +37,3 @@ class HTS221Test {
     }    
 
 }
-

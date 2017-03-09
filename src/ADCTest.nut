@@ -70,8 +70,8 @@ class ADCTest {
             read.seek(0);
             for (local i = 0; i < read.len(); i++) {
                 local val = read.readn('b');
-                // _log("read val = " + val);
-                if (val != 0xFF) {
+                _log("read val = " + val);
+                if (val != 0xFF && val != 0) {
                     resolve();
                     return;
                 }
@@ -92,4 +92,3 @@ class ADCTest {
         }
     }
 }
-
