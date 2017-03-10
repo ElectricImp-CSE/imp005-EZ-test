@@ -50,11 +50,11 @@ class LEDTest {
     }
 
     function test(resolve, reject) {
-        setLED(0xFF, 0xFF, 0x00, 0x00);
+        setLED(0x10, 0x20, 0x00, 0x00);
         imp.sleep(0.5);
-        setLED(0xFF, 0x00, 0xFF, 0x00);
+        setLED(0x10, 0x00, 0x20, 0x00);
         imp.sleep(0.5);
-        setLED(0xFF, 0x00, 0x00, 0xFF);
+        setLED(0x10, 0x00, 0x00, 0x20);
         imp.sleep(0.5);
         setLED(0x00, 0x00, 0x00, 0x00);
         resolve();
@@ -62,13 +62,13 @@ class LEDTest {
 
     function _log(str) {
         if (_debug) {
-            server.log("[LEDTest]: " + str);
+            server.log("[LED]: " + str);
         }
     }
 
     function _err(str) {
         if (_debug) {
-            server.log("[LEDTest]: " + str);
+            server.log("[LED]: " + str);
         }
     }    
 }

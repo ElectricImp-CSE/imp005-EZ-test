@@ -26,13 +26,13 @@ class HTS221Test {
 
     function _log(str) {
         if (_debug) {
-            server.log("[HTC221Test]: " + str);
+            server.log("[HTC221]: " + str);
         }
     }
 
     function _err(str) {
         if (_debug) {
-            server.log("[HTC221Test]: " + str);
+            server.log("[HTC221]: " + str);
         }
     }    
 

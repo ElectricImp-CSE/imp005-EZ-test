@@ -30,65 +30,46 @@ class ADCTest {
 
         this._debug = debug;
     }
-
     function readADC(channel) {
-
         _spiPin.chipselect(1);
 
+        // 3 byte command
         local sent = blob();
-        sent.writen(3 << 2 | channel >> 1, 'b');
+        sent.writen(0x06 | (channel >> 2), 'b');
         sent.writen((channel << 6) & 0xFF, 'b');
+        sent.writen(0, 'b');
         local read = _spiPin.writeread(sent);
 
-        if (_debug) {
-            local co = "";
-            sent.seek(0);
-            for (local i = 0; i < sent.len(); i++) {
-                co += format("%02x", sent.readn('b')) + " ";
-            }
-            _log(co);
-        }
-
         _spiPin.chipselect(0);
-        return read;
+
+        // Extract reading as volts
+        local reading = ((((read[1] & 0x0f) << 8) | read[2]) / 4095.0) * 3.3;
+        
+        if (_debug) {
+            _log(format("ch%d = %.2fv", channel, reading));
+        }
+        return reading;
     }
 
     function test(resolve, reject) {
-        local channels = [
-            MCP3208_CHANNEL_0,
-            MCP3208_CHANNEL_1,
-            MCP3208_CHANNEL_2,
-            MCP3208_CHANNEL_3,
-            MCP3208_CHANNEL_4,
-            MCP3208_CHANNEL_5,
-            MCP3208_CHANNEL_6,
-            MCP3208_CHANNEL_7
-        ];
-
-        foreach (c in channels) {
-            local read = readADC(c);
-            read.seek(0);
-            for (local i = 0; i < read.len(); i++) {
-                local val = read.readn('b');
-                _log("read val = " + val);
-                if (val != 0xFF && val != 0) {
-                    resolve();
-                    return;
-                }
-            }
+        // Read supply voltage; should be 2.4-2.6v
+        local supplydiv2 = readADC(MCP3208_CHANNEL_7);
+        if (supplydiv2 > 2.40 && supplydiv2 < 2.60) { 
+            resolve();
+            return;
         }
         reject("ADC Test failed!");
     }
 
     function _log(str) {
         if (_debug) {
-            server.log("[ADCTest]: " + str);
+            server.log("[ADC]: " + str);
         }
     }
 
     function _err(str) {
         if (_debug) {
-            server.log("[ADCTest]: " + str);
+            server.log("[ADC]: " + str);
         }
     }
 }

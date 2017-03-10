@@ -1,11 +1,11 @@
 {
+    "device-id": "5000d8c46a572cda", 
+    "model-id": "ejzcmMNvjUFy", 
     "builder-settings": {
         "builder_cli_path": "/usr/local/lib/node_modules/Builder/src/cli.js", 
-        "variable-defines": {}, 
-        "node_path": "/usr/local/bin/node"
+        "node_path": "/usr/local/bin/node", 
+        "variable-defines": {}
     }, 
-    "model-id": "ejzcmMNvjUFy", 
-    "device-id": "5000d8c46a572acc", 
     "model-name": "Test-EZ", 
     "device-file": "src/device.nut", 
     "agent-file": "src/agent.nut"
