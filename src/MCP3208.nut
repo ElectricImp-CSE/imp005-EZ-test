@@ -17,11 +17,8 @@ class MCP3208 {
     _spiPin = null;
 	_csPin = null;
 	
-	function constructor(spiPin= hardware.spi0, powerEnablePin = hardware.pinT, cs=null) { 
+	function constructor(spiPin, cs=null) { 
 		this._spiPin = spiPin; // assume it's already been configured 
-		
-		// Pin T is the power enable to the ADC
-		powerEnablePin.configure(DIGITAL_OUT, 1);
 		
 		this._csPin = cs;
 		
