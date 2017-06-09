@@ -1,6 +1,6 @@
 /*
 	This part is frequency limited. For example, through testing, it was accurate
-	within 10% up to ~200kHz clock frequency given 120k impedance. For specific max
+	within 10% up to ~200kHz clock frequency given 120k impedance with 3.3V ref. For specific max
 	clock frequency as a function of impedance, see figure 4-2 in the datasheet
 	
 	http://ww1.microchip.com/downloads/en/DeviceDoc/21298c.pdf
