@@ -1,3 +1,14 @@
+/*
+	This part is frequency limited. For example, through testing, it was accurate
+	within 10% up to ~200kHz clock frequency given 120k impedance. For specific max
+	clock frequency as a function of impedance, see figure 4-2 in the datasheet
+	
+	http://ww1.microchip.com/downloads/en/DeviceDoc/21298c.pdf
+
+
+*/
+
+
 
 class MCP3208 {
 
@@ -13,62 +24,68 @@ class MCP3208 {
     static MCP3208_CHANNEL_5     = 0x05;
     static MCP3208_CHANNEL_6     = 0x06;
     static MCP3208_CHANNEL_7     = 0x07;
+	
+	static ADC_MAX = 4095.0;
 
     _spiPin = null;
 	_csPin = null;
+	_vref = null;
 	
-	function constructor(spiPin, cs=null) { 
+	function constructor(spiPin, vref, cs=null) { 
 		this._spiPin = spiPin; // assume it's already been configured 
 		
 		this._csPin = cs;
 		
+		this._vref = vref;
 	}
 	
 	function readADC(channel) {
-		CSlow();
+		csLow();
 		
         // 3 byte command
         local sent = blob();
-        sent.writen(0x06 | (channel >> 2), 'b');
+        sent.writen(0x06 | (channel >> 2), 'b'); // for single, bit after start bit is a 1
         sent.writen((channel << 6) & 0xFF, 'b');
         sent.writen(0, 'b');
         
         local read = _spiPin.writeread(sent);
 
-        CShigh();
+        csHigh();
 
         // Extract reading as volts
-        local reading = ((((read[1] & 0x0f) << 8) | read[2]) / 4095.0) * 3.3;
-        
+        local reading = ((((read[1] & 0x0f) << 8) | read[2]) / ADC_MAX) * _vref;
         return reading;
 	}
 	function readDifferential(in_minus, in_plus) {
-	    CSlow();
+	    csLow();
 	    
 	    local select = in_plus; // datasheet
+		
+		// 3 byte command 
 	    local sent = blob();
-	    
-	    sent.writen(0x04 | (select >> 2), 'b'); // only difference b/w read single
-	    // and read differential is the bit after the start bit
+	    sent.writen(0x04 | (select >> 2), 'b'); // for differential, bit after start bit is a 0
         sent.writen((select << 6) & 0xFF, 'b');
         sent.writen(0, 'b');
 	    
-	    
 	    local read = _spiPin.writeread(sent);
-	    CShigh();
-	    
-	    local reading = ((((read[1] & 0x0f) << 8) | read[2]) / 4095.0) * 3.3;
+		
+	    csHigh();
+		
+	    // Extract reading as volts 
+	    local reading = ((((read[1] & 0x0f) << 8) | read[2]) / ADC_MAX) * _vref;
 	    return reading;
 	}
-	function CSlow() {
-		if(_csPin == null) {
+	
+	function csLow() {
+		if(_csPin == null) { // if no cs was passed, assume there is a hardware cs pin
 			_spiPin.chipselect(1);
 		}	
 		else {
 			_csPin.write(0);
 		}
 	}
-	function CShigh() {
+	
+	function csHigh() {
 		if(_csPin == null) {
 			_spiPin.chipselect(0);
 		}	
@@ -77,16 +94,3 @@ class MCP3208 {
 		}
 	}
 }
-
-
-/*
-
-myADC <- MCP3208(hardware.spi0, hardware.pinT);
-while(true) {
-    server.log(format("reading: %.2f v", myADC.readADC(1)));
-    server.log(format("difference: %.2f v", myADC.readDifferential(0, 1)));
-    imp.sleep(1);
-}
-
-
-*/
