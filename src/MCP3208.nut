@@ -25,18 +25,18 @@ class MCP3208 {
     static MCP3208_CHANNEL_6     = 0x06;
     static MCP3208_CHANNEL_7     = 0x07;
 	
-	static ADC_MAX = 4095.0;
-
+	static ADC_MAX 				 = 4096.0;
+	
     _spiPin = null;
 	_csPin = null;
 	_vref = null;
 	
 	function constructor(spiPin, vref, cs=null) { 
-		this._spiPin = spiPin; // assume it's already been configured 
+	    this._spiPin = spiPin; // assume it's already been configured 
 		
-		this._csPin = cs;
+	    this._csPin = cs;
 		
-		this._vref = vref;
+	    this._vref = vref;
 	}
 	
 	function readADC(channel) {
@@ -44,7 +44,8 @@ class MCP3208 {
 		
         // 3 byte command
         local sent = blob();
-        sent.writen(0x06 | (channel >> 2), 'b'); // for single, bit after start bit is a 1
+		// for single, bit after start bit is a 1
+        sent.writen(0x06 | (channel >> 2), 'b'); 
         sent.writen((channel << 6) & 0xFF, 'b');
         sent.writen(0, 'b');
         
@@ -63,7 +64,8 @@ class MCP3208 {
 		
 		// 3 byte command 
 	    local sent = blob();
-	    sent.writen(0x04 | (select >> 2), 'b'); // for differential, bit after start bit is a 0
+		// for differential, bit after start bit is a 0
+	    sent.writen(0x04 | (select >> 2), 'b'); 
         sent.writen((select << 6) & 0xFF, 'b');
         sent.writen(0, 'b');
 	    
@@ -77,7 +79,8 @@ class MCP3208 {
 	}
 	
 	function csLow() {
-		if(_csPin == null) { // if no cs was passed, assume there is a hardware cs pin
+		if(_csPin == null) { 
+			// if no cs was passed, assume there is a hardware cs pin
 			_spiPin.chipselect(1);
 		}	
 		else {
