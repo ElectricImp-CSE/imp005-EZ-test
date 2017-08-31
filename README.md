@@ -17,14 +17,14 @@ The factory code runs through the following tests.
 
 After each test an LED blinks, green if test pass, red if test fails. 
 
-When tests have all run the yellow LED turns on. If all tests have passed the green LED also turns on and a label is printed. If any test failed the red LED turns on and no label is printed.  
+When tests have all run, if all tests have passed the LED turns GREEN and 2 labels are printed. If any test failed the LED turns RED and no label is printed.  
 
 ### Test 1 LEDs
 
 RGB LED is tested. LED will turn on one color at a time with the colors listed below.
 
 1st: Red
-2nd: Yellow
+2nd: Blue
 3rd: Green 
 
 *Note* The code always marks this test as passing.
