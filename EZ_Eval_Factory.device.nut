@@ -109,6 +109,7 @@ class FtdiUsbDriver extends USB.DriverBase {
     function _start() {
         _bulkIn.read(blob(64 + 2));
     }
+}
 
 // Testing Factory Code
 class Imp005EZEval_TestingFactory {
