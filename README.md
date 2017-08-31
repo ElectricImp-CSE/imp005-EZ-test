@@ -17,7 +17,7 @@ The factory code runs through the following tests.
 
 After each test an LED blinks, green if test pass, red if test fails. 
 
-When tests have all run, if all tests have passed the LED turns GREEN and 2 labels are printed. If any test failed the LED turns RED and no label is printed.  
+When tests have all run the LED blinks BLUE, then if all tests have passed the LED turns GREEN and 2 labels are printed. If any test failed the LED turns RED and no label is printed.  
 
 ### Test 1 LEDs
 
