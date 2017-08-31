@@ -1026,7 +1026,7 @@ class Imp005EZEval_TestingFactory {
                     .then(function(msg) {   
                         server.log(msg);
                         local chan = 7;
-                        local expected = 2.5; // expecting 2.5
+                        local expected = 0.0; // expecting 0.0
                         local range = 0.2;
                         return tests.ADCTest(adc, chan, expected, range);
                     }.bindenv(this))
