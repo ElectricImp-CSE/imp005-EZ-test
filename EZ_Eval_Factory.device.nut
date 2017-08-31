@@ -205,7 +205,7 @@ class Imp005EZEval_TestingFactory {
                 server.log(uart.readstring());
             });
 
-            printer = QL720NW(FactoryFixture_005.RS232_UART).setOrientation(QL720NW.PORTRAIT);
+            printer = QL720NW(FactoryFixture_005.RS232_UART).setOrientation(QL720NW_PORTRAIT);
         }
 
         function configurePinterFontSettings() {
